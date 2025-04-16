@@ -53,6 +53,7 @@ public class MessageDao {
 
 			ps = connection.prepareStatement(sql.toString());
 
+			// バインド変数分書く
 			ps.setInt(1, message.getUserId());
 			ps.setString(2, message.getText());
 

@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang.StringUtils;
+
 import chapter6.beans.Message;
 import chapter6.beans.UserMessage;
 import chapter6.dao.MessageDao;
@@ -58,19 +60,25 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> select() {
+	public List<UserMessage> select(String userId) {
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
+		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
 
 		final int LIMIT_NUM = 1000;
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
-			List<UserMessage> messages = new UserMessageDao().select(connection, LIMIT_NUM);
+			Integer id = null;
+			// 渡されたuserIdをInteger型にキャスト
+			if (!StringUtils.isBlank(userId)) {
+				id = Integer.parseInt(userId);
+			}
+
+			// UserMessageDaoに渡す（引数は3つ）
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+
 			commit(connection);
 
 			return messages;
