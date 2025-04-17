@@ -112,22 +112,35 @@ public class SettingServlet extends HttpServlet {
 				" : " + new Object() {
 				}.getClass().getEnclosingMethod().getName());
 
+		Integer id = user.getId();
 		String name = user.getName();
 		String account = user.getAccount();
-		String password = user.getPassword();
 		String email = user.getEmail();
+		User checkAccount = new UserService().select(account);
 
+		// 名前が入力されており、かつ20文字を超過している場合
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
 		}
+
+		// アカウント名が未入力の場合
 		if (StringUtils.isEmpty(account)) {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
+
+		// 入力されたアカウント名に紐づくIdが重複している場合
+		if (checkAccount != null && checkAccount.getId() != id) {
+			errorMessages.add("すでに存在するアカウントです");
+		}
+
+		// メールアドレスが入力されており、かつ50文字を超過している場合
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
+
+		// エラーが一つでもある場合
 		if (errorMessages.size() != 0) {
 			return false;
 		}

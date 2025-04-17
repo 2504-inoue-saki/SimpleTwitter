@@ -62,8 +62,10 @@ public class MessageService {
 
 	public List<UserMessage> select(String userId) {
 
-		log.info(new Object() {}.getClass().getEnclosingClass().getName() +
-		" : " + new Object() {}.getClass().getEnclosingMethod().getName());
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
 
 		final int LIMIT_NUM = 1000;
 

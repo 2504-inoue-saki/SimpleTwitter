@@ -127,6 +127,26 @@ public class UserService {
 		}
 	}
 
+	// String型のaccountを引数に持つselectメソッド
+	public User select(String account) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			User user = new UserDao().select(connection, account);
+			commit(connection);
+
+			return user;
+		} catch (RuntimeException e) {
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public void update(User user) {
 
 		log.info(new Object() {
@@ -138,7 +158,7 @@ public class UserService {
 		try {
 			// パスワード暗号化
 			// パスワード未入力、またはスペースのみ入力の場合、暗号化は行わない
-			if(!StringUtils.isBlank(user.getPassword())) {
+			if (!StringUtils.isBlank(user.getPassword())) {
 				String encPassword = CipherUtil.encrypt(user.getPassword());
 				user.setPassword(encPassword);
 			}

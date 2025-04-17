@@ -111,24 +111,34 @@ public class SignUpServlet extends HttpServlet {
 		String password = user.getPassword();
 		String email = user.getEmail();
 
+		// 名前が入力されており、かつ20文字を超過している場合
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
 			errorMessages.add("名前は20文字以下で入力してください");
 		}
 
+		// アカウント名が未入力の場合
 		if (StringUtils.isEmpty(account)) {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
 
+		// アカウントが重複している場合
+		if (new UserService().select(account) != null) {
+ 			errorMessages.add("すでに存在するアカウントです");
+ 		}
+
+		// パスワードが未入力の場合
 		if (StringUtils.isEmpty(password)) {
 			errorMessages.add("パスワードを入力してください");
 		}
 
+		// メールアドレスが入力されており、かつ50文字を超過している場合
 		if (!StringUtils.isEmpty(email) && (50 < email.length())) {
 			errorMessages.add("メールアドレスは50文字以下で入力してください");
 		}
 
+		// エラーが一つでもある場合
 		if (errorMessages.size() != 0) {
 			return false;
 		}
