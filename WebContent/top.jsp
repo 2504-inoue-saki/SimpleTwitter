@@ -67,19 +67,36 @@
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account">
-						<%--"?user_id"がリンクに付くことになる
-						各ユーザー毎につぶやきを絞り込み--%>
-						<a href="./?user_id=<c:out value="${message.userId}"/> ">
-						<c:out value="${message.account}" /></a></span>
-						<span class="name"><c:out value="${message.name}" /></span>
+						<span class="account"> <%--"?user_id"がリンクに付くことになる
+						各ユーザー毎につぶやきを絞り込み--%> <a
+							href="./?user_id=<c:out value="${message.userId}"/> "> <c:out
+									value="${message.account}" /></a></span> <span class="name"><c:out
+								value="${message.name}" /></span>
 					</div>
 					<div class="text">
-						<c:out value="${message.text}" />
+						<pre><c:out value="${message.text}" /></pre>
 					</div>
 					<div class="date">
 						<fmt:formatDate value="${message.createdDate}"
 							pattern="yyyy/MM/dd HH:mm:ss" />
+					</div>
+
+					<%--userIdが一致するつぶやきは編集・削除が可能--%>
+					<div class="edit">
+						<c:if test="${message.userId == loginUser.id}">
+							<%--つぶやきの編集--%>
+
+							<form action="edit" method="get">
+								<input name="message_id" type="hidden" value="${message.id}">
+								<input type="submit" value="編集" />
+							</form>
+							<%--つぶやきの削除--%>
+
+							<form action="deleteMessage" method="post">
+								<input name="message_id" type="hidden" value="${message.id}">
+								<input type="submit" value="削除" />
+							</form>
+						</c:if>
 					</div>
 				</div>
 			</c:forEach>

@@ -98,4 +98,92 @@ public class MessageService {
 			close(connection);
 		}
 	}
+
+	// つぶやきの削除処理
+	public void delete(String messageId) {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			Integer id = null;
+			// 渡されたuserIdをInteger型にキャスト
+			if (!StringUtils.isBlank(messageId)) {
+				id = Integer.parseInt(messageId);
+			}
+			new MessageDao().delete(connection, id);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	// つぶやきの編集処理
+	public Message select(Integer id) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			Message message = new MessageDao().select(connection, id);
+
+			commit(connection);
+
+			return message;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public void update(Message message) {
+
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			new MessageDao().update(connection, message);
+
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }
