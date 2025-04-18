@@ -183,11 +183,9 @@ public class MessageDao {
 			ps.setString(1, message.getText());
 			ps.setInt(2, message.getId());
 
-			int count = ps.executeUpdate();
-			if (count == 0) {
-				log.log(Level.SEVERE, "更新対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
-				throw new NoRowsUpdatedRuntimeException();
-			}
+			// SQLの更新処理
+			ps.executeUpdate();
+
 		} catch (SQLException e) {
 			log.log(Level.SEVERE, new Object() {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);

@@ -60,7 +60,8 @@
 				<%--EditServletにmessage_idをhidden状態で渡す--%>
 				<input name="message_id" type="hidden" value="${message.id}">
 				<textarea name="text" cols="100" rows="5" class="tweet-box">${message.text}</textarea>
-				<br /> <input type="submit" value="更新">（140文字まで）
+				<br />
+				<input type="submit" value="更新">（140文字まで）
 			</form>
 		</div>
 		<%--コピーライトの表記は特殊文字を使用--%>

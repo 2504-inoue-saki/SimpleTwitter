@@ -57,16 +57,16 @@ public class EditServlet extends HttpServlet {
 
 		if (targetMessage == null) {
 			errorMessages.add("不正なパラメータが入力されました");
-		} else {
-			request.setAttribute("message", targetMessage);
-		}
 
-		if (errorMessages.size() != 0) {
-			HttpSession session = request.getSession();
-			session.setAttribute("errorMessages", errorMessages);
-			response.sendRedirect("./");
-			return;
+			if (errorMessages.size() != 0) {
+				HttpSession session = request.getSession();
+				session.setAttribute("errorMessages", errorMessages);
+				response.sendRedirect("./");
+				return;
+			}
 		}
+		// 受け取った情報をedit.jspに渡す
+		request.setAttribute("message", targetMessage);
 
 		request.getRequestDispatcher("/edit.jsp").forward(request, response);
 	}
@@ -84,18 +84,18 @@ public class EditServlet extends HttpServlet {
 		message.setId(Integer.parseInt(request.getParameter("message_id")));
 		message.setText(request.getParameter("text"));
 
-		if (isValid(message.getText(), errorMessages)) {
-			new MessageService().update(message);
-		}
-
-		if (errorMessages.size() != 0) {
+		// isValidがfalseの場合、エラー処理を行う
+		if (!isValid(message.getText(), errorMessages)) {
 			request.setAttribute("errorMessages", errorMessages);
 			request.setAttribute("message", message);
 			request.getRequestDispatcher("edit.jsp").forward(request, response);
 			return;
 		}
+		// エラーチェックを終えてからMessageServiceを呼ぶ
+		new MessageService().update(message);
 
 		response.sendRedirect("./");
+
 	}
 
 	private boolean isValid(String text, List<String> errorMessages) {
