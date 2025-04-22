@@ -20,6 +20,10 @@
 					</c:forEach>
 				</ul>
 			</div>
+			<%--エラーメッセージをセッションから削除
+			トップ画面から遷移してエラーメッセージを表示させた時点で、
+			セッションに持っているメッセージの内容は不要になる--%>
+			<c:remove var="errorMessages" scope="session" />
 		</c:if>
 
 		<form action="login" method="post">

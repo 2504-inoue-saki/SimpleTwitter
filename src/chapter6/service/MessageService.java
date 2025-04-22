@@ -4,6 +4,7 @@ import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,7 +61,7 @@ public class MessageService {
 		}
 	}
 
-	public List<UserMessage> select(String userId) {
+	public List<UserMessage> select(String userId, String start, String end) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -78,8 +79,27 @@ public class MessageService {
 				id = Integer.parseInt(userId);
 			}
 
-			// UserMessageDaoに渡す（引数は3つ）
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+			//つぶやきの絞り込み
+			// 開始日時の設定
+			if (!StringUtils.isBlank(start)) {
+				// 半角スペース忘れずに入れる
+				start += " 00:00:00";
+			} else {
+				start = "2020/01/01 00:00:00";
+			}
+			// 終了日時の設定
+			if (!StringUtils.isBlank(end)) {
+				end += " 23:59:59";
+			} else {
+				// 普通にインスタンス化すると未定義エラーになるため、
+				// 回避策として以下の通り記述
+				java.util.Date currentDate = new java.util.Date();
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+				end = simpleDateFormat.format(currentDate);
+			}
+
+			// UserMessageDaoに渡す
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM, start, end);
 
 			commit(connection);
 

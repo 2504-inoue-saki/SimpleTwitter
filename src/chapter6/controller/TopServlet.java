@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import chapter6.beans.User;
+import chapter6.beans.UserComment;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
+import chapter6.service.CommentService;
 import chapter6.service.MessageService;
 
 //アプリケーションのデフォルトのアクセス先としてindex.jspを設定
@@ -54,11 +56,19 @@ public class TopServlet extends HttpServlet {
 			isShowMessageForm = true;
 		}
 
+		// つぶやきの絞り込み
+		String start = request.getParameter("start");
+		String end = request.getParameter("end");
 		// MessageServiceに渡すためのuser_idを用意
 		String userId = request.getParameter("user_id");
-		List<UserMessage> messages = new MessageService().select(userId);
+		List<UserMessage> messages = new MessageService().select(userId, start, end);
+		// 返信コメント表示
+		List<UserComment> comments = new CommentService().select();
 
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
 		request.setAttribute("messages", messages);
+		request.setAttribute("comments", comments);
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}

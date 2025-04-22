@@ -67,9 +67,9 @@ public class LoginServlet extends HttpServlet {
 			return;
 		}
 
-		//ログイン情報はユーザがログアウトしない限りは常に保持しておきたいため、
-		//画面をまたいでも保存ができるセッション領域に格納
-		//loginUserをキーとしてユーザー情報がセッションにセットされる
+		// ログイン情報はユーザがログアウトしない限りは常に保持しておきたいため、
+		// 画面をまたいでも保存ができるセッション領域に格納
+		// loginUserをキーとしてユーザー情報がセッションにセットされる
 		HttpSession session = request.getSession();
 		session.setAttribute("loginUser", user);
 		response.sendRedirect("./");

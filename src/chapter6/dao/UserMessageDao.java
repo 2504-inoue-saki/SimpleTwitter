@@ -33,7 +33,8 @@ public class UserMessageDao {
 	}
 
 	// IDでの絞り込みに対応
-	public List<UserMessage> select(Connection connection, Integer id, int num) {
+	public List<UserMessage> select(Connection connection, Integer id, int num,
+			String start, String end) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() +
@@ -53,16 +54,20 @@ public class UserMessageDao {
 			sql.append("FROM messages ");
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
+			// 期間での絞り込み
+			sql.append("WHERE messages.created_date between ? AND ? ");
 			// 絞り込む対象のUserIdがセットされている場合
 			if (id != null) {
-				sql.append("WHERE messages.user_id = ? ");
+				sql.append("AND messages.user_id = ? ");
 			}
 			sql.append("ORDER BY created_date DESC limit " + num);
 
 			ps = connection.prepareStatement(sql.toString());
 			// バインド変数分書く
+			ps.setString(1, start);
+			ps.setString(2, end);
 			if (id != null) {
-				ps.setInt(1, id);
+				ps.setInt(3, id);
 			}
 
 			ResultSet rs = ps.executeQuery();

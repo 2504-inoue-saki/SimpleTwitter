@@ -27,6 +27,18 @@
 				<a href="logout">ログアウト</a>
 			</c:if>
 		</div>
+
+		<%-- つぶやきの絞り込み --%>
+		<div class="date-filter">
+			<form action="./" method="get">
+				日付
+				<input name="start" type="date" value="${start}" id="start"/>
+				～
+				<input name="end" type="date" value="${end}" id="end"/>
+				<input type="submit" value="絞り込み" id="filter"/>
+			</form>
+		</div>
+
 		<c:if test="${ not empty loginUser }">
 			<div class="profile">
 				<div class="name">
@@ -45,13 +57,13 @@
 		</c:if>
 		<c:if test="${ not empty errorMessages }">
 			<div class="errorMessages">
+				<%--順序なしのリストを作成--%>
 				<ul>
 					<c:forEach items="${errorMessages}" var="errorMessage">
 						<li><c:out value="${errorMessage}" />
 					</c:forEach>
 				</ul>
 			</div>
-			<c:remove var="errorMessages" scope="session" />
 		</c:if>
 
 		<div class="form-area">
@@ -97,6 +109,39 @@
 							<form action="deleteMessage" method="post">
 								<input name="message_id" type="hidden" value="${message.id}">
 								<input type="submit" value="削除" />
+							</form>
+						</c:if>
+					</div>
+				</div>
+
+				<%--つぶやきの返信--%>
+				<div class="comment">
+					<div class="eachComment">
+						<c:forEach items="${comments}" var="comment">
+							<c:if test="${message.id == comment.messageId}">
+								<div class="comment">
+									<div class="account-name">
+										<span class="account"><c:out value="${comment.account}" /></span>
+										<span class="name"><c:out value="${comment.name}" /></span>
+									</div>
+									<div class="test">
+										<pre><c:out value="${comment.text}" /></pre>
+									</div>
+									<div class="date">
+										<fmt:formatDate value="${comment.createdDate}"
+											pattern="yyyy/MM/dd HH:mm:ss" />
+									</div>
+								</div>
+							</c:if>
+							</c:forEach>
+						</div>
+					<div class="form-area">
+						<c:if test="${ isShowMessageForm }">
+							<form action="comment" method="post">
+								<input name="message_id" type="hidden" value="${message.id}">
+								返信<br />
+								<textarea name="text" cols="100" rows="5" class="reply-box"></textarea>
+								<br /> <input type="submit" value="返信">（140文字まで）
 							</form>
 						</c:if>
 					</div>

@@ -113,6 +113,12 @@ a.profile .account {
 	margin: 0 auto;
 }
 
+.comment .date {
+	font-weight: lighter;
+	color: gray;
+	font: small-caption;
+}
+
 label {
 	display: block;
 }
