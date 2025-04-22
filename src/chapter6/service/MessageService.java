@@ -5,6 +5,7 @@ import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,9 +92,7 @@ public class MessageService {
 			if (!StringUtils.isBlank(end)) {
 				end += " 23:59:59";
 			} else {
-				// 普通にインスタンス化すると未定義エラーになるため、
-				// 回避策として以下の通り記述
-				java.util.Date currentDate = new java.util.Date();
+				Date currentDate = new Date();
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				end = simpleDateFormat.format(currentDate);
 			}
