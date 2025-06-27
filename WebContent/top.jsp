@@ -20,7 +20,7 @@
 				<a href="login">ログイン</a>
 
 				<%--今いるリソースから相対位置で「～/signup」というURLにアクセスする--%>
-				<a href="signup">登録する</a>
+				<a href="signup">登録</a>
 
 			</c:if>
 			<c:if test="${ not empty loginUser }">
