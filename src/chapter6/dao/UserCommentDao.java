@@ -48,7 +48,8 @@ public class UserCommentDao {
 			sql.append("    users.name as name, ");
 			sql.append("    comments.message_id as message_id, ");
 			sql.append("    comments.text as text, ");
-			sql.append("    comments.created_date as created_date ");
+			sql.append("    comments.created_date as created_date, ");
+			sql.append("    users.id as user_id ");
 			sql.append("FROM comments ");
 			sql.append("INNER JOIN users ");
 			sql.append("ON comments.user_id = users.id ");
@@ -87,6 +88,7 @@ public class UserCommentDao {
 				comment.setMessageId(rs.getInt("message_id"));
 				comment.setText(rs.getString("text"));
 				comment.setCreatedDate(rs.getTimestamp("created_date"));
+				comment.setUserId(rs.getInt("user_id"));
 
 				comments.add(comment);
 			}

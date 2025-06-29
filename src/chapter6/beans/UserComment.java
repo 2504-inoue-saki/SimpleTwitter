@@ -11,6 +11,7 @@ public class UserComment implements Serializable {
 	private int messageId;
 	private String text;
 	private Date createdDate;
+	private int userId;
 
 	// getter/setterの設定
 
@@ -61,4 +62,12 @@ public class UserComment implements Serializable {
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
 	}
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 }

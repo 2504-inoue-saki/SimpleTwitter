@@ -3,153 +3,133 @@
 <%@page isELIgnored="false"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-<head>
-<script src="./js/jquery-3.7.1.min.js"></script>
-<script src="./js/main.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>簡易Twitter</title>
-<link href="./css/style.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-	<div class="main-contents">
-		<div class="header">
-			<c:if test="${ empty loginUser }">
 
-				<a href="login">ログイン</a>
+<%-- ページタイトルを設定 --%>
+<% request.setAttribute("pageTitle", "タイムライン"); %>
 
-				<%--今いるリソースから相対位置で「～/signup」というURLにアクセスする--%>
-				<a href="signup">登録</a>
+<jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
-			</c:if>
-			<c:if test="${ not empty loginUser }">
-				<a href="./">ホーム</a>
-				<a href="setting">設定</a>
-				<a href="logout">ログアウト</a>
-			</c:if>
-		</div>
+<div class="filter-area">
+	<h3>つぶやき絞り込み</h3>
+	<form action="./" method="get">
+		期間： <input name="start" type="date" value="${start}" /> ～ <input
+			name="end" type="date" value="${end}" /> <input type="submit"
+			value="絞り込み" />
+	</form>
+</div>
 
-		<%-- つぶやきの絞り込み --%>
-		<div class="date-filter">
-			<form action="./" method="get">
-				日付
-				<input name="start" type="date" value="${start}" id="start"/>
-				～
-				<input name="end" type="date" value="${end}" id="end"/>
-				<input type="submit" value="絞り込み" id="filter"/>
-			</form>
-		</div>
+<div class="form-area">
+	<c:if test="${ isShowMessageForm }">
+		<form action="message" method="post" id="tweetForm">
+			<textarea name="text" class="tweet-box" placeholder="今どうしてる？"
+				maxlength="140"></textarea>
+			<input type="submit" value="つぶやく">
+		</form>
+	</c:if>
+</div>
 
-		<c:if test="${ not empty loginUser }">
-			<div class="profile">
-				<div class="name">
-					<h2>
-						<c:out value="${loginUser.name}" />
-					</h2>
-				</div>
-				<div class="account">
-					@
-					<c:out value="${loginUser.account}" />
-				</div>
-				<div class="description">
-					<c:out value="${loginUser.description}" />
-				</div>
-			</div>
-		</c:if>
-		<c:if test="${ not empty errorMessages }">
-			<div class="errorMessages">
-				<%--順序なしのリストを作成--%>
-				<ul>
-					<c:forEach items="${errorMessages}" var="errorMessage">
-						<li><c:out value="${errorMessage}" />
-					</c:forEach>
-				</ul>
-			</div>
-		</c:if>
-
-		<div class="form-area">
-			<c:if test="${ isShowMessageForm }">
-				<form action="message" method="post">
-					いま、どうしてる？<br />
-					<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
-					<br /> <input type="submit" value="つぶやく">（140文字まで）
-				</form>
-			</c:if>
-		</div>
-		<div class="messages">
+<div class="messages-area">
+	<c:choose>
+		<c:when test="${messages != null && !messages.isEmpty()}">
 			<c:forEach items="${messages}" var="message">
-				<div class="message">
-					<div class="account-name">
-						<span class="account">
-						<%--"?user_id"がリンクに付くことになる--%>
-						<%--各ユーザー毎につぶやきを絞り込み--%>
-						<a href="./?user_id=<c:out value="${message.userId}"/> ">
-						<c:out value="${message.account}" /></a></span>
-						<span class="name">
-						<c:out value="${message.name}" /></span>
-					</div>
-					<div class="text">
-						<pre><c:out value="${message.text}" /></pre>
-					</div>
-					<div class="date">
-						<fmt:formatDate value="${message.createdDate}"
-							pattern="yyyy/MM/dd HH:mm:ss" />
-					</div>
+				<div class="message-item">
+					<div class="message">
+						<div class="account-name">
+							<a class="account"
+								href="./?user_id=<c:out value="${message.userId}"/>">@<c:out
+									value="${message.account}" /></a> <span class="name"><c:out
+									value="${message.name}" /></span>
+						</div>
+						<div class="text">
+							<c:out value="${message.text}" />
+						</div>
+						<div class="date-actions">
+							<span class="date"> <fmt:formatDate
+									value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
+								<c:if
+									test="${message.updatedDate != null && message.createdDate.time != message.updatedDate.time}">
+                                            (更新: <fmt:formatDate
+										value="${message.updatedDate}" pattern="yyyy/MM/dd HH:mm:ss" />)
+                                        </c:if>
+							</span>
 
-					<%--userIdが一致するつぶやきは編集・削除が可能--%>
-					<div class="edit">
-						<c:if test="${message.userId == loginUser.id}">
-							<%--つぶやきの編集--%>
+							<div class="actions">
+								<button
+									class="like-button ${message.likedByCurrentUser ? 'liked' : ''}"
+									data-message-id="${message.id}">
+									<span class="heart-icon">${message.likedByCurrentUser ? '♥' : '♡'}</span>
+									<span class="like-count">${message.likeCount}</span>
+								</button>
 
-							<form action="edit" method="get">
-								<input name="message_id" type="hidden" value="${message.id}">
-								<input type="submit" value="編集" />
-							</form>
-							<%--つぶやきの削除--%>
-							<div class = "delete">
-							<form action="deleteMessage" method="post" onsubmit = "return clicked()">
-								<input name="message_id" type="hidden" value="${message.id}">
-								<input id = "button_delete" type="submit" value="削除" />
-							</form>
+								<c:if test="${loginUser.id == message.userId}">
+									<form action="deleteMessage" method="post" class="delete-form">
+										<input type="hidden" name="message_id" value="${message.id}">
+										<button type="submit" class="delete-button">削除</button>
+									</form>
+								</c:if>
+								<c:if test="${message.userId == loginUser.id}">
+									<form action="edit" method="get" class="edit-form">
+										<input name="message_id" type="hidden" value="${message.id}">
+										<button type="submit" class="edit-button">編集</button>
+									</form>
+								</c:if>
 							</div>
-						</c:if>
+						</div>
 					</div>
-				</div>
-
-				<%--つぶやきの返信--%>
-				<div class="comment">
-					<div class="eachComment">
-						<c:forEach items="${comments}" var="comment">
-							<c:if test="${message.id == comment.messageId}">
-								<div class="account-name">
-									<span class="account"><c:out value="${comment.account}" /></span>
-									<span class="name"><c:out value="${comment.name}" /></span>
-								</div>
-								<div class="test">
-									<pre><c:out value="${comment.text}" /></pre>
-								</div>
-								<div class="date">
-									<fmt:formatDate value="${comment.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
-								</div>
-							</c:if>
+					<%-- .message の閉じタグ --%>
+					<div class="comments-section">
+						<div class="comments-list">
+							<c:forEach items="${comments}" var="comment">
+								<c:if test="${message.id == comment.messageId}">
+									<div class="comment-item">
+										<div class="comment-account-name">
+											<a class="account" href="./?user_id=${comment.userId}">@<c:out
+													value="${comment.account}" /></a> <span class="name"><c:out
+													value="${comment.name}" /></span>
+										</div>
+										<div class="comment-text">
+											<c:out value="${comment.text}" />
+										</div>
+										<div class="comment-date-actions">
+											<span class="comment-date"> <fmt:formatDate
+													value="${comment.createdDate}"
+													pattern="yyyy/MM/dd HH:mm:ss" />
+											</span>
+											<c:if test="${loginUser.id == comment.userId}">
+												<form action="deleteComment" method="post"
+													class="delete-comment-form">
+													<input type="hidden" name="comment_id"
+														value="${comment.id}"> <input type="hidden"
+														name="message_id" value="${message.id}">
+													<button type="submit" class="delete-comment-button">削除</button>
+												</form>
+											</c:if>
+										</div>
+									</div>
+								</c:if>
 							</c:forEach>
 						</div>
-					<div class="form-area">
-						<c:if test="${ isShowMessageForm }">
-							<form action="comment" method="post">
-								<input name="message_id" type="hidden" value="${message.id}">
-								返信<br />
-								<textarea name="text" cols="100" rows="5" class="reply-box"></textarea>
-								<br /> <input type="submit" value="返信">（140文字まで）
-							</form>
-						</c:if>
+
+						<div class="reply-form-area">
+							<c:if test="${ isShowMessageForm }">
+								<form action="comment" method="post" class="comment-post-form">
+									<input name="message_id" type="hidden" value="${message.id}">
+									<textarea name="text" class="reply-box" placeholder="返信を書く"
+										maxlength="140"></textarea>
+									<input type="submit" value="返信">
+								</form>
+							</c:if>
+						</div>
 					</div>
 				</div>
+				<%-- .message-item の閉じタグ --%>
 			</c:forEach>
-		</div>
-		<%--コピーライトの表記は特殊文字を使用--%>
-		<div class="copyright">Copyright &copy; Saki Inoue</div>
-	</div>
-</body>
-</html>
+		</c:when>
+		<c:otherwise>
+			<p class="no-messages">まだつぶやきがありません。</p>
+		</c:otherwise>
+	</c:choose>
+</div>
+<%-- <div class="copyright">Copyright &copy; Saki Inoue</div> は footer.jsp に移動 --%>
+
+<jsp:include page="/WEB-INF/views/layout/footer.jsp" />

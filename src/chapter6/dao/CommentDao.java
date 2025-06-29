@@ -69,4 +69,34 @@ public class CommentDao {
 		}
 	}
 
+	public void delete(Connection connection, int commentId, int userId) {
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() +
+				" : " + new Object() {
+				}.getClass().getEnclosingMethod().getName());
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM comments WHERE id = ? AND user_id = ?"); // コメントIDとユーザーIDで確認
+
+			ps = connection.prepareStatement(sql.toString());
+			ps.setInt(1, commentId);
+			ps.setInt(2, userId); // ログインユーザーのIDと一致するかを確認
+
+			int deletedRows = ps.executeUpdate();
+			if (deletedRows == 0) {
+				// 削除対象が見つからない、またはユーザーIDが一致しない
+				throw new SQLRuntimeException(
+						new SQLException("コメントが見つからないか、削除権限がありません。(ID: " + commentId + ", User: " + userId + ")"));
+			}
+
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, "コメント削除DAOエラー: " + e.toString(), e);
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
 }

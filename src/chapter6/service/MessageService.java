@@ -1,6 +1,6 @@
 package chapter6.service;
 
-import static chapter6.utils.CloseableUtil.*;
+import static chapter6.utils.CloseableUtil.close;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
@@ -17,6 +17,7 @@ import chapter6.beans.UserMessage;
 import chapter6.dao.MessageDao;
 import chapter6.dao.UserMessageDao;
 import chapter6.logging.InitApplication;
+import chapter6.utils.DBUtil;
 
 public class MessageService {
 
@@ -58,7 +59,7 @@ public class MessageService {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
 			throw e;
 		} finally {
-			close(connection);
+			DBUtil.close(connection);
 		}
 	}
 
@@ -119,34 +120,23 @@ public class MessageService {
 	}
 
 	// つぶやきの削除処理
-	public void delete(Integer messageId) {
+    // ユーザーIDによる権限チェックを追加したdeleteメソッド
+    // DAOにメッセージIDとユーザーIDを渡し、削除処理と権限チェックを行わせる
+    public boolean delete(Integer messageId, Integer userId) {
+        // nullチェック
+        if (messageId == null || userId == null) {
+            System.err.println("MessageService.delete: messageIdまたはuserIdがnullです。");
+            return false;
+        }
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+        // ここに実際のDB削除ロジックを記述
+        // 例: DAOを呼び出して、messageIdとuserIdが一致するレコードを削除
+        MessageDao messageDao = new MessageDao();
+        int affectedRows = messageDao.delete(messageId, userId); // DAOのdeleteメソッドを呼び出し
 
-		Connection connection = null;
-		try {
-			connection = getConnection();
-
-			new MessageDao().delete(connection, messageId);
-
-			commit(connection);
-		} catch (RuntimeException e) {
-			rollback(connection);
-			log.log(Level.SEVERE, new Object() {
-			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-			throw e;
-		} catch (Error e) {
-			rollback(connection);
-			log.log(Level.SEVERE, new Object() {
-			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-			throw e;
-		} finally {
-			close(connection);
-		}
-	}
+        // 1件以上削除されたら成功とみなす
+        return affectedRows > 0;
+    }
 
 	// 編集対象のつぶやきをidで抽出
 	public Message select(Integer id) {

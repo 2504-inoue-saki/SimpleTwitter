@@ -2,6 +2,8 @@ package chapter6.utils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import chapter6.exception.SQLRuntimeException;
@@ -75,5 +77,52 @@ public class DBUtil {
 			throw new SQLRuntimeException(e);
 		}
 	}
+
+    /**
+     * コネクションをクローズします。
+     * @param con クローズするConnectionオブジェクト
+     */
+    public static void close(Connection con) {
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace(); // エラーログ出力
+            }
+        }
+    }
+
+    /**
+     * ResultSet, PreparedStatement, Connectionをクローズします。
+     * @param rs クローズするResultSetオブジェクト (null許容)
+     * @param ps クローズするPreparedStatementオブジェクト (null許容)
+     * @param con クローズするConnectionオブジェクト (null許容)
+     */
+    public static void close(ResultSet rs, PreparedStatement ps, Connection con) {
+        // ResultSetをクローズ
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        // PreparedStatementをクローズ
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        // Connectionをクローズ
+        if (con != null) {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
 }

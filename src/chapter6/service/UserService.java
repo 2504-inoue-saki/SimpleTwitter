@@ -1,6 +1,6 @@
 package chapter6.service;
 
-import static chapter6.utils.CloseableUtil.*;
+import static chapter6.utils.CloseableUtil.close;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
@@ -13,6 +13,7 @@ import chapter6.beans.User;
 import chapter6.dao.UserDao;
 import chapter6.logging.InitApplication;
 import chapter6.utils.CipherUtil;
+import chapter6.utils.DBUtil;
 
 public class UserService {
 
@@ -62,7 +63,7 @@ public class UserService {
 			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
 			throw e;
 		} finally {
-			close(connection);
+			DBUtil.close(connection);
 		}
 	}
 

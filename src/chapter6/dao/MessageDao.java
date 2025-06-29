@@ -12,9 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import chapter6.beans.Message;
-import chapter6.exception.NoRowsUpdatedRuntimeException;
 import chapter6.exception.SQLRuntimeException;
 import chapter6.logging.InitApplication;
+import chapter6.utils.DBUtil;
 
 public class MessageDao {
 
@@ -72,34 +72,31 @@ public class MessageDao {
 	}
 
 	//つぶやきの削除
-	public void delete(Connection connection, Integer id) {
+    // メッセージIDとユーザーIDが一致するメッセージを削除するメソッド
+	public int delete(Integer messageId, Integer userId) {
+	    Connection conn = null;
+	    PreparedStatement ps = null;
+	    int affectedRows = 0; // 影響を受けた行数（削除された行数）
 
-		log.info(new Object() {
-		}.getClass().getEnclosingClass().getName() +
-				" : " + new Object() {
-				}.getClass().getEnclosingMethod().getName());
+	    try {
+	        conn = DBUtil.getConnection();
+	        String sql = "DELETE FROM messages WHERE id = ? AND user_id = ?";
+	        ps = conn.prepareStatement(sql);
+	        ps.setInt(1, messageId);
+	        ps.setInt(2, userId);
 
-		PreparedStatement ps = null;
-		try {
-			String sql = "DELETE FROM messages WHERE id = ?";
+	        affectedRows = ps.executeUpdate(); // 実行して影響を受けた行数を取得
 
-			ps = connection.prepareStatement(sql);
+	        DBUtil.commit(conn);
 
-			// バインド変数分書く
-			ps.setInt(1, id);
-
-			int count = ps.executeUpdate();
-			if (count == 0) {
-				log.log(Level.SEVERE, "削除対象のレコードが存在しません", new NoRowsUpdatedRuntimeException());
-				throw new NoRowsUpdatedRuntimeException();
-			}
-		} catch (SQLException e) {
-			log.log(Level.SEVERE, new Object() {
-			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
-			throw new SQLRuntimeException(e);
-		} finally {
-			close(ps);
-		}
+	    } catch (SQLException e) {
+	        DBUtil.rollback(conn);
+	        e.printStackTrace();
+	        throw new RuntimeException("DBエラーによりメッセージの削除に失敗しました。", e); // 例外を再スロー
+	    } finally {
+	        DBUtil.close(null, ps, conn); // ResultSetは使用していないのでnull
+	    }
+	    return affectedRows;
 	}
 
 	// つぶやきの編集画面に内容を表示する
