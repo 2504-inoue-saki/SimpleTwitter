@@ -162,7 +162,24 @@ body {
 	transition: background-color 0.2s ease;
 }
 
-.filter-area input[type="submit"]:hover {
+.signup-form input[type="submit"],
+.setting-form input[type="submit"],
+.login-form input[type="submit"] {
+	background-color: #1DA1F2;
+	color: white;
+	border: none;
+	padding: 10px 20px;
+	border-radius: 9999px; /* ピル型 */
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+	margin-top: 20px;
+}
+
+.filter-area input[type="submit"]:hover,
+.signup-form input[type="submit"]:hover,
+.setting-form input[type="submit"]:hover,
+.login-form input[type="submit"]:hover {
 	background-color: #0c85d0;
 }
 
@@ -528,10 +545,4 @@ label {
 /* フォーム全体のパディングも再確認 */
 .signup-form, .setting-form, .login-form {
 	padding: 30px;
-}
-
-/* （公開プロフィールに表示されます）のテキストの左右のパディング */
-.signup-form small, .setting-form small {
-	padding-left: 15px;
-	padding-right: 15px;
 }

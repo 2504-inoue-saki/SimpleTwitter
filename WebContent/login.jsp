@@ -11,10 +11,11 @@
 <%-- ここにログインフォームのコンテンツのみを記述 --%>
 <form action="login" method="post" class="login-form">
 	<%-- フォームにクラスを追加 --%>
-	<br /> <label for="accountOrEmail">アカウント名かメールアドレス</label> <input
-		name="accountOrEmail" id="accountOrEmail" /> <br /> <label
-		for="password">パスワード</label> <input name="password" type="password"
-		id="password" /> <br /> <input type="submit" value="ログイン" /> <br />
+	<br /> <label for="accountOrEmail">アカウント名かメールアドレス</label>
+	<input name="accountOrEmail" id="accountOrEmail" /> <br />
+	<label for="password">パスワード</label>
+	<input name="password" type="password" id="password" /> <br />
+	<input type="submit" value="ログイン" /> <br />
 </form>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />

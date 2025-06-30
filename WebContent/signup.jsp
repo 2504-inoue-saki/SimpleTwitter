@@ -12,7 +12,7 @@
 		<form action="signup" method="post" class="signup-form">
 			<br />
 			<label for="name">名前</label>
-			<input name="name" id="name" />（公開プロフィールに表示されます）
+			<input name="name" id="name" />
 			<br />
 			<label for="account">アカウント名</label>
 			<input name="account" id="account" />
