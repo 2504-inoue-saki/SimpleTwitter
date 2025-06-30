@@ -59,7 +59,6 @@ body {
 	justify-content: space-between;
 	cursor: pointer;
 	z-index: 1001;
-	/* margin-left: auto; は、ロゴの反対側に寄せる場合 */
 }
 
 .hamburger-menu .bar {
@@ -88,7 +87,7 @@ body {
 	display: none; /* デフォルトで非表示 (JavaScriptで表示制御) */
 	flex-direction: column; /* 縦並び */
 	position: absolute; /* ヘッダーの下に重ねて表示 */
-	top: 50px; /* ヘッダーの高さに合わせて調整してください */
+	top: 50px; /* ヘッダーの高さに合わせて調整 */
 	right: 0; /* 右寄せにする場合 */
 	width: 200px; /* メニューの幅 */
 	background-color: #FFFFFF;
@@ -129,7 +128,7 @@ body {
 	font-size: 0.9em;
 }
 
-.filter-area h3 { /* h3を追加している場合 */
+.filter-area h3 {
 	margin: 0 0 10px;
 	color: #333;
 	font-size: 1.1em;
