@@ -15,7 +15,6 @@
 		name="accountOrEmail" id="accountOrEmail" /> <br /> <label
 		for="password">パスワード</label> <input name="password" type="password"
 		id="password" /> <br /> <input type="submit" value="ログイン" /> <br />
-	<a href="./">戻る</a>
 </form>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />

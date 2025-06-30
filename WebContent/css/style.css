@@ -2,120 +2,123 @@
 
 /* --- グローバル設定・リセット --- */
 body {
-    background-color: #F0F2F5;
-    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-    box-sizing: border-box;
+	background-color: #F0F2F5;
+	font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	box-sizing: border-box;
 }
 
 /* メインコンテンツエリア */
 .main-contents {
-    width: 100%;
-    max-width: 600px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    min-height: 100vh;
-    border-left: 1px solid #E0E0E0;
-    border-right: 1px solid #E0E0E0;
-    box-sizing: border-box;
-    text-align: left;
+	width: 100%;
+	max-width: 600px;
+	background-color: white;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	min-height: 100vh;
+	border-left: 1px solid #E0E0E0;
+	border-right: 1px solid #E0E0E0;
+	box-sizing: border-box;
+	text-align: left;
 }
 
 /* --- ヘッダー --- */
 .header {
-    background-color: #FFFFFF;
-    border-bottom: 1px solid #E0E0E0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+	background-color: #FFFFFF;
+	border-bottom: 1px solid #E0E0E0;
+	position: sticky;
+	top: 0;
+	z-index: 1000;
 }
 
 .header-inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    max-width: 900px;
-    margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 20px;
+	max-width: 900px;
+	margin: 0 auto;
 }
 
 .header-logo a {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: #1DA1F2;
-    text-decoration: none;
+	font-size: 1.5em;
+	font-weight: bold;
+	color: #1DA1F2;
+	text-decoration: none;
 }
 
 /* --- ハンバーガーメニューアイコン --- */
 .hamburger-menu {
-    width: 30px;
-    height: 20px;
-    display: flex; /* デフォルトで常に表示 */
-    flex-direction: column;
-    justify-content: space-between;
-    cursor: pointer;
-    z-index: 1001;
-    /* margin-left: auto; は、ロゴの反対側に寄せる場合 */
+	width: 30px;
+	height: 20px;
+	display: flex; /* デフォルトで常に表示 */
+	flex-direction: column;
+	justify-content: space-between;
+	cursor: pointer;
+	z-index: 1001;
+	/* margin-left: auto; は、ロゴの反対側に寄せる場合 */
 }
 
 .hamburger-menu .bar {
-    width: 100%;
-    height: 3px;
-    background-color: #333;
-    border-radius: 2px;
-    transition: all 0.3s ease;
+	width: 100%;
+	height: 3px;
+	background-color: #333;
+	border-radius: 2px;
+	transition: all 0.3s ease;
 }
 
 /* ハンバーガーメニューがアクティブになった時のアニメーション */
 .hamburger-menu.active .bar:nth-child(1) {
-    transform: translateY(8px) rotate(45deg);
+	transform: translateY(8px) rotate(45deg);
 }
 
 .hamburger-menu.active .bar:nth-child(2) {
-    opacity: 0;
+	opacity: 0;
 }
 
 .hamburger-menu.active .bar:nth-child(3) {
-    transform: translateY(-8px) rotate(-45deg);
+	transform: translateY(-8px) rotate(-45deg);
 }
 
 /* --- ナビゲーションメニュー --- */
 .nav-menu {
-    display: none; /* デフォルトで非表示 (JavaScriptで表示制御) */
-    flex-direction: column; /* 縦並び */
-    position: absolute; /* ヘッダーの下に重ねて表示 */
-    top: 50px; /* ヘッダーの高さに合わせて調整してください */
-    right: 0; /* 右寄せにする場合 */
-    width: 200px; /* メニューの幅 */
-    background-color: #FFFFFF;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border-bottom-left-radius: 8px;
-    border-bottom-right-radius: 8px;
-    overflow: hidden;
-    z-index: 999;
+	display: none; /* デフォルトで非表示 (JavaScriptで表示制御) */
+	flex-direction: column; /* 縦並び */
+	position: absolute; /* ヘッダーの下に重ねて表示 */
+	top: 50px; /* ヘッダーの高さに合わせて調整してください */
+	right: 0; /* 右寄せにする場合 */
+	width: 200px; /* メニューの幅 */
+	background-color: #FFFFFF;
+	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	overflow: hidden;
+	z-index: 999;
+	color: #1DA1F2;
+	font-size: 1.1em;
+	font-weight: bold;
 }
 
 /* メニューが開いている時に適用するクラス */
 .nav-menu.nav-menu-open {
-    display: flex; /* 表示されるときにflexコンテナにする */
-    opacity: 1;
-    transform: translateY(0);
-    pointer-events: auto; /* クリック可能にする */
+	display: flex; /* 表示されるときにflexコンテナにする */
+	opacity: 1;
+	transform: translateY(0);
+	pointer-events: auto; /* クリック可能にする */
 }
 
 .nav-menu a {
-    padding: 15px 20px;
-    border-bottom: 1px solid #F0F2F5;
-    border-radius: 0;
-    text-align: left;
+	padding: 15px 20px;
+	border-bottom: 1px solid #F0F2F5;
+	border-radius: 0;
+	text-align: left;
 }
 
 .nav-menu a:last-child {
-    border-bottom: none;
+	border-bottom: none;
 }
 /* --- 絞り込みエリア --- */
 .filter-area { /* クラス名を 'date-filter' から 'filter-area' に統一 */
@@ -151,8 +154,12 @@ body {
 .filter-area input[type="submit"] {
 	background-color: #1DA1F2;
 	color: white;
-	cursor: pointer;
 	border: none;
+	padding: 10px 20px;
+	border-radius: 9999px; /* ピル型 */
+	font-weight: bold;
+	cursor: pointer;
+	float: right; /* 右寄せ */
 	transition: background-color 0.2s ease;
 }
 
@@ -259,7 +266,10 @@ body {
 
 /* 親ツイート本体 */
 .message {
-	/* .message-itemが親になったので、.message独自のスタイルは最小限に */
+	/* ネストを解消し、直接スタイルを記述 */     width:100%; /* 親要素の幅いっぱいに広がることを保証 */    
+	box-sizing:border-box; /* パディングを含めて幅を計算 */     text-align:left;
+	/* message要素内のテキストも左寄せに保証 */     margin-left:0;    /* 左マージンを確実に0に設定 */
+	    margin-right:0;  /* 右マージンも確実に0に設定 */ padding:010px;
 
 }
 
@@ -290,6 +300,7 @@ body {
 	margin-bottom: 10px;
 	white-space: pre-wrap; /* preタグのような改行処理をしつつ折り返し */
 	word-wrap: break-word; /* 長い単語の折り返し */
+	text-align: left;
 }
 
 .message .date-actions { /* 日付とアクションをまとめるコンテナ */
@@ -429,6 +440,7 @@ body {
 	word-wrap: break-word;
 	white-space: pre-wrap;
 	margin-bottom: 5px;
+	text-align: left;
 }
 
 .comment-item .comment-date-actions {
@@ -445,6 +457,7 @@ body {
 	padding-top: 15px;
 	border-top: 1px solid #E0E0E0;
 	text-align: left;
+	margin-bottom: 30px;
 }
 
 .comment-post-form textarea.reply-box { /* 明示的に指定 */
@@ -501,37 +514,13 @@ label {
 	color: #333;
 }
 
-/* フォーム内の各要素のパディング調整 */
-.signup-form label,
-.signup-form input[type="text"],
-.signup-form input[type="password"],
-.signup-form input[type="email"],
-.signup-form textarea,
-.setting-form label,
-.setting-form input[type="text"],
-.setting-form input[type="password"],
-.setting-form input[type="email"],
-.setting-form textarea {
-    /* 左右のパディングを増やす */
-    padding-left: 15px; /* 例: 左側に15pxのパディング */
-    padding-right: 15px; /* 例: 右側に15pxのパディング */
-}
-
 /* フォーム全体のパディングも再確認 */
-.signup-form,
-.setting-form,
-.login-form {
-    padding: 30px;
+.signup-form, .setting-form, .login-form {
+	padding: 30px;
 }
 
-/* （名前はあなたの公開プロフィールに表示されます）のテキストの左右のパディング */
-.signup-form small,
-.setting-form small {
-    padding-left: 15px; /* input要素に合わせたパディング */
-    padding-right: 15px;
-}
-
-/* 戻るリンク */
-.signup-form a,
-.setting-form a {
+/* （公開プロフィールに表示されます）のテキストの左右のパディング */
+.signup-form small, .setting-form small {
+	padding-left: 15px; /* input要素に合わせたパディング */
+	padding-right: 15px;
 }

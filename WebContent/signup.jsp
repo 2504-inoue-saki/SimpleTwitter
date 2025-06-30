@@ -12,7 +12,7 @@
 		<form action="signup" method="post" class="signup-form">
 			<br />
 			<label for="name">名前</label>
-			<input name="name" id="name" />（名前はあなたの公開プロフィールに表示されます）
+			<input name="name" id="name" />（公開プロフィールに表示されます）
 			<br />
 			<label for="account">アカウント名</label>
 			<input name="account" id="account" />
@@ -28,7 +28,6 @@
 			<br />
 			<input type="submit" value="登録" />
 			<br />
-			<a href="./">戻る</a>
 		</form>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />

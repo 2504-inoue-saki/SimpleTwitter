@@ -27,7 +27,6 @@
 			<br />
 			<input type="submit" value="更新" />
 			<br />
-			<a href="./">戻る</a>
 		</form>
 
 <jsp:include page="/WEB-INF/views/layout/footer.jsp" />
