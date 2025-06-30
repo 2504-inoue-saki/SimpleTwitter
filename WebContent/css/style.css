@@ -2,106 +2,121 @@
 
 /* --- グローバル設定・リセット --- */
 body {
-	background-color: #F0F2F5; /* やや薄めのグレーの背景 */
-	font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-	/* モダンなフォント */
-	margin: 0;
-	padding: 0;
-	display: flex; /* flexboxを使って中央寄せ */
-	justify-content: center; /* 水平方向中央寄せ */
-	min-height: 100vh; /* 画面いっぱいの高さ */
-	box-sizing: border-box; /* paddingとborderをwidth/heightに含める */
+    background-color: #F0F2F5;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
 }
 
 /* メインコンテンツエリア */
 .main-contents {
-	width: 100%; /* モバイル対応のためデフォルトは100% */
-	max-width: 600px; /* Twitterのタイムラインに近い最大幅 */
-	background-color: white;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* 軽い影で立体感を出す */
-	min-height: 100vh; /* 内容が少なくても画面いっぱいの高さ */
-	border-left: 1px solid #E0E0E0; /* 左右のボーダー */
-	border-right: 1px solid #E0E0E0;
-	box-sizing: border-box;
-	text-align: left;
+    width: 100%;
+    max-width: 600px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    min-height: 100vh;
+    border-left: 1px solid #E0E0E0;
+    border-right: 1px solid #E0E0E0;
+    box-sizing: border-box;
+    text-align: left;
 }
 
 /* --- ヘッダー --- */
 .header {
-	background-color: #FFFFFF;
-	border-bottom: 1px solid #E0E0E0;
-	position: sticky;
-	top: 0;
-	z-index: 1000;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #E0E0E0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .header-inner {
-	display: flex; /* Flexboxで要素を横並びに */
-	justify-content: space-between; /* 要素を両端に配置 */
-	align-items: center; /* 垂直方向中央寄せ */
-	padding: 10px 20px; /* 上下のパディングを調整 */
-	max-width: 900px; /* 最大幅を設定 (任意) */
-	margin: 0 auto; /* 中央寄せ */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 .header-logo a {
-	font-size: 1.5em;
-	font-weight: bold;
-	color: #1DA1F2; /* Twitterブルー */
-	text-decoration: none;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #1DA1F2;
+    text-decoration: none;
 }
 
 /* --- ハンバーガーメニューアイコン --- */
 .hamburger-menu {
-	width: 30px;
-	height: 20px;
-	display: none; /* デフォルトでは非表示 (PC表示用) */
-	flex-direction: column;
-	justify-content: space-between;
-	cursor: pointer;
-	z-index: 1001; /* メニューより手前に */
+    width: 30px;
+    height: 20px;
+    display: flex; /* デフォルトで常に表示 */
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    z-index: 1001;
+    /* margin-left: auto; は、ロゴの反対側に寄せる場合 */
 }
 
 .hamburger-menu .bar {
-	width: 100%;
-	height: 3px;
-	background-color: #333;
-	border-radius: 2px;
-	transition: all 0.3s ease; /* アニメーション */
+    width: 100%;
+    height: 3px;
+    background-color: #333;
+    border-radius: 2px;
+    transition: all 0.3s ease;
 }
 
 /* ハンバーガーメニューがアクティブになった時のアニメーション */
 .hamburger-menu.active .bar:nth-child(1) {
-	transform: translateY(8px) rotate(45deg);
+    transform: translateY(8px) rotate(45deg);
 }
 
 .hamburger-menu.active .bar:nth-child(2) {
-	opacity: 0; /* 中央のバーを非表示 */
+    opacity: 0;
 }
 
 .hamburger-menu.active .bar:nth-child(3) {
-	transform: translateY(-8px) rotate(-45deg);
+    transform: translateY(-8px) rotate(-45deg);
 }
 
 /* --- ナビゲーションメニュー --- */
 .nav-menu {
-	display: flex; /* PC版では横並び */
-	gap: 20px; /* リンク間のスペース */
+    display: none; /* デフォルトで非表示 (JavaScriptで表示制御) */
+    flex-direction: column; /* 縦並び */
+    position: absolute; /* ヘッダーの下に重ねて表示 */
+    top: 50px; /* ヘッダーの高さに合わせて調整してください */
+    right: 0; /* 右寄せにする場合 */
+    width: 200px; /* メニューの幅 */
+    background-color: #FFFFFF;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    overflow: hidden;
+    z-index: 999;
+}
+
+/* メニューが開いている時に適用するクラス */
+.nav-menu.nav-menu-open {
+    display: flex; /* 表示されるときにflexコンテナにする */
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto; /* クリック可能にする */
 }
 
 .nav-menu a {
-	text-decoration: none;
-	color: #1DA1F2; /* Twitterブルー */
-	font-weight: bold;
-	padding: 8px 15px;
-	border-radius: 9999px; /* ピル型 */
-	transition: background-color 0.2s ease;
+    padding: 15px 20px;
+    border-bottom: 1px solid #F0F2F5;
+    border-radius: 0;
+    text-align: left;
 }
 
-.nav-menu a:hover {
-	background-color: rgba(29, 161, 242, 0.1); /* 薄いブルーの背景 */
+.nav-menu a:last-child {
+    border-bottom: none;
 }
-
 /* --- 絞り込みエリア --- */
 .filter-area { /* クラス名を 'date-filter' から 'filter-area' に統一 */
 	padding: 15px 20px;
