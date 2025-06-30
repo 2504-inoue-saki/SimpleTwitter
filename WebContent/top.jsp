@@ -10,7 +10,6 @@
 <jsp:include page="/WEB-INF/views/layout/header.jsp" />
 
 <div class="filter-area">
-	<h3>つぶやき絞り込み</h3>
 	<form action="./" method="get">
 		期間： <input name="start" type="date" value="${start}" /> ～ <input
 			name="end" type="date" value="${end}" /> <input type="submit"
@@ -40,9 +39,7 @@
 									value="${message.account}" /></a> <span class="name"><c:out
 									value="${message.name}" /></span>
 						</div>
-						<div class="text">
-							<c:out value="${message.text}" />
-						</div>
+						<div class="text"><c:out value="${message.text}" /></div>
 						<div class="date-actions">
 							<span class="date"> <fmt:formatDate
 									value="${message.createdDate}" pattern="yyyy/MM/dd HH:mm:ss" />
@@ -87,9 +84,7 @@
 													value="${comment.account}" /></a> <span class="name"><c:out
 													value="${comment.name}" /></span>
 										</div>
-										<div class="comment-text">
-											<c:out value="${comment.text}" />
-										</div>
+										<div class="comment-text"><c:out value="${comment.text}" /></div>
 										<div class="comment-date-actions">
 											<span class="comment-date"> <fmt:formatDate
 													value="${comment.createdDate}"

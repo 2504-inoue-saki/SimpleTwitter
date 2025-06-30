@@ -125,7 +125,7 @@ body {
 	padding: 15px 20px;
 	background-color: #F8F8F8;
 	border-bottom: 1px solid #E0E0E0;
-	text-align: center;
+	text-align: center; /* フォームを中央寄せに保つ */
 	font-size: 0.9em;
 }
 
@@ -159,7 +159,6 @@ body {
 	border-radius: 9999px; /* ピル型 */
 	font-weight: bold;
 	cursor: pointer;
-	float: right; /* 右寄せ */
 	transition: background-color 0.2s ease;
 }
 
@@ -220,8 +219,14 @@ body {
 	text-align: left;
 }
 
+.form-area form { /* id="tweetForm" のフォーム */
+    display: flex;
+    flex-direction: column; /* テキストエリアとボタンを縦に並べる */
+    align-items: flex-end; /* ボタンを右寄せにする */
+}
+
 .tweet-box, .reply-box {
-	width: calc(100% - 20px); /* 左右のパディングを考慮 */
+    width: 100%; /* 親の幅いっぱいに広がるように */
 	min-height: 80px; /* 投稿エリアの高さを少し高く */
 	border: 1px solid #CCD6DD;
 	border-radius: 8px;
@@ -240,7 +245,6 @@ body {
 	border-radius: 9999px; /* ピル型 */
 	font-weight: bold;
 	cursor: pointer;
-	float: right; /* 右寄せ */
 	transition: background-color 0.2s ease;
 }
 
@@ -249,28 +253,25 @@ body {
 }
 
 /* --- メッセージ一覧エリア (Twitter風のタイムライン) --- */
-.messages-area { /* HTMLのクラス名に合わせて .messages から変更 */
+.messages-area {
 	background-color: #FFFFFF;
 }
 
-.message-item { /* 各ツイートとそれに紐づくコメント全体を囲むクラス */
+.message-item {
 	border-bottom: 1px solid #E0E0E0;
-	padding: 15px 20px;
+	padding: 15px 20px; /* message-item の左右のパディングがテキストの余白となる */
 	background-color: #FFFFFF;
 	text-align: left;
 }
 
 .message-item:hover {
-	background-color: #F5F8FA; /* ホバーで少し色を変える */
+	background-color: #F5F8FA;
 }
 
 /* 親ツイート本体 */
 .message {
-	/* ネストを解消し、直接スタイルを記述 */     width:100%; /* 親要素の幅いっぱいに広がることを保証 */    
-	box-sizing:border-box; /* パディングを含めて幅を計算 */     text-align:left;
-	/* message要素内のテキストも左寄せに保証 */     margin-left:0;    /* 左マージンを確実に0に設定 */
-	    margin-right:0;  /* 右マージンも確実に0に設定 */ padding:010px;
-
+   width: 100%;
+    box-sizing: border-box;
 }
 
 .message .account-name {
@@ -279,17 +280,17 @@ body {
 
 .message .account-name .account {
 	font-weight: bold;
-	color: #1DA1F2; /* アカウント名をTwitterブルーに */
-	text-decoration: none; /* 下線を消す */
+	color: #1DA1F2;
+	text-decoration: none;
 }
 
 .message .account-name .account:hover {
-	text-decoration: underline; /* ホバーで下線 */
+	text-decoration: underline;
 }
 
 .message .account-name .name {
 	font-weight: normal;
-	color: #657786; /* グレー */
+	color: #657786;
 	font-size: 0.9em;
 	margin-left: 5px;
 }
@@ -298,52 +299,55 @@ body {
 	font-size: 1em;
 	line-height: 1.4;
 	margin-bottom: 10px;
-	white-space: pre-wrap; /* preタグのような改行処理をしつつ折り返し */
-	word-wrap: break-word; /* 長い単語の折り返し */
+	white-space: pre-wrap;
+	word-wrap: break-word;
 	text-align: left;
+    padding-left: 0;
+    margin-left: 0;
 }
 
-.message .date-actions { /* 日付とアクションをまとめるコンテナ */
+.message .date-actions {
 	display: flex;
-	justify-content: space-between; /* 両端寄せ */
+	justify-content: space-between;
 	align-items: center;
 	margin-top: 10px;
 	font-size: 0.8em;
 	color: #657786;
+	padding-left: 0;
 }
 
-.message .actions { /* いいね、削除、編集ボタンのコンテナ */
+.message .actions {
 	display: flex;
 	align-items: center;
-	gap: 10px; /* ボタン間のスペース */
+	gap: 10px;
 }
 
 /* いいね！ボタンのスタイル */
 .like-button {
 	background: none;
 	border: none;
-	color: #657786; /* いいね以外のデフォルトの色 */
+	color: #657786;
 	cursor: pointer;
 	font-size: 1em;
-	padding: 5px 8px; /* パディングを調整 */
+	padding: 5px 8px;
 	display: inline-flex;
 	align-items: center;
 	gap: 5px;
-	border-radius: 9999px; /* ホバー時に丸い背景が出るように */
+	border-radius: 9999px;
 	transition: color 0.2s ease, background-color 0.2s ease;
 }
 
 .like-button:hover {
-	color: #E0245E; /* ホバー時のハートの色 */
-	background-color: rgba(224, 36, 94, 0.1); /* ホバー時の薄い赤の背景 */
+	color: #E0245E;
+	background-color: rgba(224, 36, 94, 0.1);
 }
 
 .like-button.liked {
-	color: #E0245E; /* いいね済みのハートの色 */
+	color: #E0245E;
 }
 
 .like-button .heart-icon {
-	font-size: 1.1em; /* ハートのサイズを少し調整 */
+	font-size: 1.1em;
 }
 
 .like-button .like-count {
@@ -389,18 +393,18 @@ body {
 
 /* --- コメントセクション --- */
 .comments-section {
-	margin-top: 15px; /* 親ツイートとの間に少しスペース */
+	margin-top: 15px;
 	padding-left: 20px; /* 親ツイートからインデント */
-	border-left: 2px solid #E8F0F5; /* 縦の線で関連性を示す */
+	border-left: 2px solid #E8F0F5;
 }
 
 .comments-list {
-	margin-bottom: 15px; /* コメントリストと返信フォームの間のスペース */
+	margin-bottom: 15px;
 }
 
-.comment-item { /* 各コメントの要素 */
-	background-color: #F8F8F8; /* 少し薄い背景色 */
-	padding: 10px;
+.comment-item {
+	background-color: #F8F8F8;
+	padding: 10px; /* コメントアイテムの左右パディングがテキストの余白となる */
 	margin-bottom: 10px;
 	border-radius: 8px;
 	border: 1px solid #E0E0E0;
@@ -418,7 +422,7 @@ body {
 }
 
 .comment-item .comment-account-name .account {
-	color: #1DA1F2; /* アカウント名をTwitterブルーに */
+	color: #1DA1F2;
 	text-decoration: none;
 	font-weight: bold;
 	margin-right: 5px;
@@ -435,12 +439,14 @@ body {
 }
 
 .comment-item .comment-text {
-	font-size: 0.9em; /* コメントの文字を少し小さく */
+	font-size: 0.9em;
 	line-height: 1.4;
 	word-wrap: break-word;
 	white-space: pre-wrap;
 	margin-bottom: 5px;
 	text-align: left;
+    padding-left: 0;
+    margin-left: 0;
 }
 
 .comment-item .comment-date-actions {
@@ -449,6 +455,7 @@ body {
 	align-items: center;
 	font-size: 0.75em;
 	color: #657786;
+	padding-left: 0;
 }
 
 /* 返信フォームエリア */
@@ -457,16 +464,21 @@ body {
 	padding-top: 15px;
 	border-top: 1px solid #E0E0E0;
 	text-align: left;
-	margin-bottom: 30px;
 }
 
-.comment-post-form textarea.reply-box { /* 明示的に指定 */
-	width: calc(100% - 20px); /* 左右のパディングを考慮 */
-	min-height: 50px; /* 返信ボックスの高さ */
+.reply-form-area form.comment-post-form {
+    display: flex;
+    flex-direction: column; /* テキストエリアとボタンを縦に並べる */
+    align-items: flex-end; /* ボタンを右寄せにする */
+}
+
+.comment-post-form textarea.reply-box {
+    width: 100%; /* 親の幅いっぱいに広がるように */
+	min-height: 50px;
 	border: 1px solid #CCD6DD;
 	border-radius: 8px;
 	padding: 10px;
-	font-size: 0.9em; /* 少し小さめ */
+	font-size: 0.9em;
 	resize: vertical;
 	box-sizing: border-box;
 	margin-bottom: 10px;
@@ -476,11 +488,10 @@ body {
 	background-color: #1DA1F2;
 	color: white;
 	border: none;
-	padding: 8px 15px; /* 返信ボタンのサイズ調整 */
+	padding: 8px 15px;
 	border-radius: 9999px;
 	font-weight: bold;
 	cursor: pointer;
-	float: right;
 	transition: background-color 0.2s ease;
 }
 
@@ -508,8 +519,8 @@ body {
 
 /* その他の要素 */
 label {
-	display: block; /* labelはブロック要素に */
-	margin-bottom: 5px; /* 下に少しスペース */
+	display: block;
+	margin-bottom: 5px;
 	font-weight: bold;
 	color: #333;
 }
@@ -521,6 +532,6 @@ label {
 
 /* （公開プロフィールに表示されます）のテキストの左右のパディング */
 .signup-form small, .setting-form small {
-	padding-left: 15px; /* input要素に合わせたパディング */
+	padding-left: 15px;
 	padding-right: 15px;
 }
